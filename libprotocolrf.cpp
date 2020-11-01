@@ -36,14 +36,14 @@ int Libprotocolrf::SendData(MessengRF &messeng, const std::string &path,
     std::shuffle(data_.begin(), data_.end(), rnd);
 
     for (const auto &unit : data_) {
-      file.Write(const_cast<Packed &>(unit).ID().Data() +
-                 const_cast<Packed &>(unit).Data() + "\n\0");
+      file.Write(const_cast<Packed &>(unit).ID().Data() + TypeField.kData +
+                 "=" + const_cast<Packed &>(unit).Data() + ";\n\0");
     }
 
   } else {
     for (const auto &unit : messeng.Data()) {
-      file.Write(const_cast<Packed &>(unit).ID().Data() +
-                 const_cast<Packed &>(unit).Data() + "\n\0");
+      file.Write(const_cast<Packed &>(unit).ID().Data() + TypeField.kData +
+                 "=" + const_cast<Packed &>(unit).Data() + ";\n\0");
     }
   }
 
