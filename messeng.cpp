@@ -6,7 +6,29 @@ MessengRF::MessengRF(const Packed& packed) { packeds_.insert(packed); }
 
 MessengRF::MessengRF(const std::string& data) { SplitMesseng(data); }
 
-std::set<Packed>& MessengRF::Data() { return packeds_; }
+std::set<Packed>& MessengRF::GetPacked() { return packeds_; }
+
+std::ostream& MessengRF::PrintPacked(const MessengRF& messeng) {
+  std::cout << "Messeng[" << messeng.id_.id_messeng << "]" << std::endl;
+  std::cout << "size[" << messeng.id_.num_packed << "]" << std::endl
+            << std::endl;
+  for (const auto& unit : messeng.packeds_) {
+    std::cout << unit << std::endl;
+  }
+  return std::cout;
+}
+
+const std::string MessengRF::GetMesseng() {
+  std::string out;
+
+  for (const auto& unit : packeds_) {
+    out.append(const_cast<Packed&>(unit).Data());
+  }
+  return out;
+}
+
+void MessengRF::AddPacked(const Packed& packed) { packeds_.insert(packed); }
+
 IDMessang& MessengRF::ID() { return id_; }
 
 size_t MessengRF::Size() { return packeds_.size(); }

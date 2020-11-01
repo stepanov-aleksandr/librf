@@ -28,7 +28,11 @@ class MessengRF {
   MessengRF(const Packed& packed);
   MessengRF(const std::string& data);
 
-  std::set<Packed>& Data();
+  std::set<Packed>& GetPacked();
+  std::ostream& PrintPacked(const MessengRF& messeng);
+  const std::string GetMesseng();
+  void AddPacked(const Packed& packed);
+
   IDMessang& ID();
 
   size_t Size();

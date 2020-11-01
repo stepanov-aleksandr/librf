@@ -25,6 +25,8 @@ class Libprotocolrf {
 
   int Mix(MessengRF &messeng);
 
+  std::vector<std::string> Split(const std::string &s, char delimiter);
+
   virtual int SendData(MessengRF &messeng, const std::string &path,
                        bool flag_mix);
   virtual int ReadData(MessengRF &messeng, const std::string &path);

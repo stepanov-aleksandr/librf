@@ -20,3 +20,10 @@ std::ostream &operator<<(std::ostream &out, const Packed &packed) {
   out << "Number packed[" << packed.id_.id_packed_ << "]" << std::endl;
   return out;
 }
+
+Packed::Packed(const size_t &id_messeng, const size_t &id_packed,
+               const std::string &data) {
+  id_.id_messeng_ = id_messeng;
+  id_.id_packed_ = id_packed;
+  data_ = data;
+}

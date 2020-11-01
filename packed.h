@@ -10,8 +10,6 @@ class IDPacked {
   IDPacked() {}
   IDPacked(const size_t &id_messeng, const size_t &id_packed)
       : id_messeng_(id_messeng), id_packed_(id_packed) {}
-  size_t id_messeng_{0};
-  size_t id_packed_{0};
 
   const std::string PackField(std::string type, const uint64_t &value) {
     return std::string{type + "=" + std::to_string(value) + ";"};
@@ -21,11 +19,17 @@ class IDPacked {
     return PackField(TypeField.kIdMesseng, id_messeng_) +
            PackField(TypeField.kNumPacked, id_packed_);
   }
+
+  size_t id_messeng_{0};
+  size_t id_packed_{0};
 };
 
 class Packed {
  public:
   Packed(const IDPacked &id, const std::string &data);
+  Packed(const size_t &id_messeng, const size_t &id_packed,
+         const std::string &data);
+
   std::string &Data();
   IDPacked &ID();
 

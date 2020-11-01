@@ -32,24 +32,22 @@ using namespace fio;
 //  ASSERT_THAT(0, Eq(0));
 //}
 
-// TEST(function, SendData) {
-//  Libprotocolrf lib;
-//  std::string path = "outdatapacked_2.txt";
-//  MessengRF messeng("Hello  World");
-//  lib.SendData(messeng, path, true);
-//  std::cout << messeng << std::endl;
+TEST(function, SendData) {
+  Libprotocolrf lib;
+  std::string path = "outdatapacked_2.txt";
+  MessengRF messeng("Hello  World");
+  lib.SendData(messeng, path, true);
 
-//  EXPECT_EQ(1, 1);
-//  ASSERT_THAT(0, Eq(0));
-//}
+  EXPECT_EQ(1, 1);
+  ASSERT_THAT(0, Eq(0));
+}
 
 TEST(function, ReadData) {
   Libprotocolrf lib;
   std::string path = "outdatapacked_2.txt";
   MessengRF messeng;
   lib.ReadData(messeng, path);
-  std::cout << messeng << std::endl;
-
+  std::cout << messeng.GetMesseng() << std::endl;
   EXPECT_EQ(1, 1);
   ASSERT_THAT(0, Eq(0));
 }
