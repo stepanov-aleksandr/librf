@@ -235,6 +235,8 @@ class FIO {
   size_t Size() { return this->file_.tellg(); }
   T Data() const { return buffer; }
 
+  bool IsOpen() { return file_.is_open(); }
+
  private:
   std::fstream file_;
   std::string path_;

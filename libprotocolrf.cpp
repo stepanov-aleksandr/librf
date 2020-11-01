@@ -51,10 +51,23 @@ int Libprotocolrf::SendData(MessengRF &messeng, const std::string &path,
   return 0;
 }
 
-int Libprotocolrf::ReadData(const MessengRF &messeng, const std::string &path) {
+class WordDelimitedByCommas : public std::string {};
+
+int Libprotocolrf::ReadData(MessengRF &messeng, const std::string &path) {
   fio::FIO<std::string> file;
-  file.Open("test.txt", std::ios::out);
-  file.GetLine();
+  file.Open(path, std::ios::out);
+  std::map<std::string, std::string> data;
+  while (file.IsOpen()) {
+    auto data = file.GetLine();
+    std::istringstream iss(data);
+    std::vector<std::string> results(
+        (std::istream_iterator<WordDelimitedByCommas>(iss)),
+        std::istream_iterator<WordDelimitedByCommas>());
+    std::cout << "dd" << std::endl;
+  }
+
+  ;
+
   std::string id_messeng;
   std::string num_packed;
   std::string size_packed;

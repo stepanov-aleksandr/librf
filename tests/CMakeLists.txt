@@ -41,7 +41,7 @@ add_executable(test_1 main.cpp tst_test_1.h
                ${GTestFiles})
 add_test(NAME test_1 COMMAND test_1)
 
-set(librf "/home/stam/workspace_open/build-libprotocolrf-Desktop_Qt_5_15_0_GCC_64bit-Debug/liblibprotocolrf.a")
+set(librf "/home/stam/workspace_open/librf/build/liblibprotocolrf.a")
 
 target_link_libraries(test_1 PRIVATE Threads::Threads ${librf})
 

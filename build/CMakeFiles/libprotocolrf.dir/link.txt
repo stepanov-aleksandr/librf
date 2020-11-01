@@ -1,0 +1,2 @@
+/usr/bin/ar qc liblibprotocolrf.a  CMakeFiles/libprotocolrf.dir/libprotocolrf_autogen/mocs_compilation.cpp.o CMakeFiles/libprotocolrf.dir/libprotocolrf.cpp.o CMakeFiles/libprotocolrf.dir/packed.cpp.o CMakeFiles/libprotocolrf.dir/messeng.cpp.o CMakeFiles/libprotocolrf.dir/microjson.cpp.o
+/usr/bin/ranlib liblibprotocolrf.a

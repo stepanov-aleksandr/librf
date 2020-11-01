@@ -3,7 +3,10 @@
 
 #include <algorithm>
 #include <cstring>
+#include <iterator>
+#include <map>
 #include <random>
+#include <sstream>
 #include <string>
 #include "fio.h"
 #include "messeng.h"
@@ -24,7 +27,7 @@ class Libprotocolrf {
 
   virtual int SendData(MessengRF &messeng, const std::string &path,
                        bool flag_mix);
-  virtual int ReadData(const MessengRF &messeng, const std::string &path);
+  virtual int ReadData(MessengRF &messeng, const std::string &path);
 
  private:
   std::string data_;

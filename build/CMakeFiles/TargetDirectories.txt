@@ -1,0 +1,4 @@
+/home/stam/workspace_open/librf/build/CMakeFiles/rebuild_cache.dir
+/home/stam/workspace_open/librf/build/CMakeFiles/edit_cache.dir
+/home/stam/workspace_open/librf/build/CMakeFiles/libprotocolrf.dir
+/home/stam/workspace_open/librf/build/CMakeFiles/libprotocolrf_autogen.dir
