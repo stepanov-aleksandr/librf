@@ -236,6 +236,7 @@ class FIO {
   T Data() const { return buffer; }
 
   bool IsOpen() { return file_.is_open(); }
+  bool IsEOF() { return file_.eof(); }
 
  private:
   std::fstream file_;
