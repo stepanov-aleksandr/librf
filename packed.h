@@ -11,7 +11,8 @@ class IDPacked {
   IDPacked(const size_t &id_messeng, const size_t &id_packed)
       : id_messeng_(id_messeng), id_packed_(id_packed) {}
 
-  const std::string PackField(std::string type, const uint64_t &value) {
+  static const std::string PackField(const std::string &type,
+                                     const uint64_t &value) {
     return std::string{type + "=" + std::to_string(value) + ";"};
   }
 

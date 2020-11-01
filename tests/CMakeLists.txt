@@ -37,11 +37,11 @@ endif ()
 
 include_directories(${GTestIncludes})
 
-add_executable(test_1 main.cpp tst_test_1.h
+add_executable(test_1 main.cpp tst_test_1.h tst_packed.h tst_messeng.h
                ${GTestFiles})
 add_test(NAME test_1 COMMAND test_1)
 
-set(librf "/home/stam/workspace_open/librf/build/liblibprotocolrf.a")
+set(librf ${CMAKE_CURRENT_SOURCE_DIR}/../build/liblibprotocolrf.a)
 
 target_link_libraries(test_1 PRIVATE Threads::Threads ${librf})
 
