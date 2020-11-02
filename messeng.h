@@ -50,8 +50,8 @@ class Header {
  public:
   Header(uint8_t number_messeng, uint8_t number_packed, uint8_t number_packeds,
          uint8_t size_packed)
-      : number_packed_(number_packed),
-        number_messeng_(number_messeng),
+      : number_messeng_(number_messeng),
+        number_packed_(number_packed),
         number_packeds_(number_packeds),
         size_packed_(size_packed) {}
 
@@ -78,6 +78,7 @@ class Packed_ {
   }
 
   std::vector<uint8_t> Data_() { return data_; }
+  size_t Size() { return sizeof(Header) + data_.size(); }
 
   friend bool operator<(const Packed_& lhs, const Packed_& rhs);
 
@@ -105,7 +106,7 @@ class Messeng_ {
   const std::vector<Packed_> SplitPacked(const Type& data) {
     auto num_full_pack = (data.size() + sizeof(Header)) / (MAX_SIZE_PACKED)-1;
     if (num_full_pack == 0) {
-      Packed_ pkg({number_, 0, 0, MAX_SIZE_PACKED}, {data.begin(), data.end()});
+      Packed_ pkg({number_, 1, 1, MAX_SIZE_PACKED}, {data.begin(), data.end()});
       return {pkg};
     }
 
@@ -118,7 +119,7 @@ class Messeng_ {
     auto start = data.begin();
 
     std::vector<Packed_> packeds_;
-    auto cp = 0;
+    auto cp = 1;
     for (; start < data.begin() + MAX_SIZE_PACKED * num_full_pack;
          start += MAX_SIZE_PACKED) {
       packeds_.push_back({{number_, cp++, num_pack, MAX_SIZE_PACKED},
@@ -139,7 +140,7 @@ class Messeng_ {
   Type Messeng() { return data_; }
 
  private:
-  uint8_t number_{0};
+  uint8_t number_{1};
   Type data_;
 };
 

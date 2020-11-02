@@ -62,14 +62,16 @@ int Libprotocolrf::SendData(std::vector<Packed_> &packeds,
 
     for (auto unit : packeds) {
       auto vec = unit.Data();
-      file.Write(std::string(vec.begin(), vec.end()) + ";\n\0");
+      file.Write(std::string(vec.begin(), vec.end()));
     }
+    //    file.Write("\n");
 
   } else {
     for (auto unit : packeds) {
       auto vec = unit.Data();
-      file.Write(std::string(vec.begin(), vec.end()) + ";\n\0");
+      file.Write(std::string(vec.begin(), vec.end()));
     }
+    //    file.Write("\n");
   }
 
   file.Close();
@@ -118,19 +120,13 @@ int Libprotocolrf::ReadData(std::set<Packed_> &packeds,
   fio::FIO<std::string> file;
   file.Open(path, std::ios::in);
   while (!file.IsEOF()) {
-    auto data = file.GetLine();
-    if (data.size() == 0) return 0;
-
-    std::string f0 = data.substr(0, 1);
-    std::string f1 = data.substr(1, 1);
-    std::string f2 = data.substr(2, 1);
-    std::string f3 = data.substr(3, 1);
-
-    auto number_messeng_ = (uint8_t)(f0.data()[0]);
-    auto number_packed_ = (uint8_t)(f1.data()[0]);
-    auto number_packeds_ = (uint8_t)(f2.data()[0]);
-    auto size_packed_ = (uint8_t)(f3.data()[0]);
-    std::vector<uint8_t> data_(&data[4], &data[data.size() - 1]);
+    auto data = file.Read(sizeof(Header) + MAX_SIZE_PACKED);
+    if (data.size() == 0) continue;
+    auto number_messeng_ = static_cast<uint8_t>((data.substr(0, 1).data()[0]));
+    auto number_packed_ = static_cast<uint8_t>(data.substr(1, 1).data()[0]);
+    auto number_packeds_ = static_cast<uint8_t>(data.substr(2, 1).data()[0]);
+    auto size_packed_ = static_cast<uint8_t>(data.substr(3, 1).data()[0]);
+    std::vector<uint8_t> data_(&data[4], &data[data.size()]);
     auto out = Packed_(
         {number_messeng_, number_packed_, number_packeds_, size_packed_},
         data_);

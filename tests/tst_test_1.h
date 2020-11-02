@@ -56,7 +56,7 @@ using namespace fio;
 TEST(librf, SendData_) {
   Libprotocolrf lib;
   std::string path = "outdatapacked_1.txt";
-  Messeng_<std::string> msg("Foo bar");
+  Messeng_<std::string> msg("Hello world Hello world Hello world");
   auto data = msg.GetRaw();
   lib.SendData(data, path, 1);
   std::set<Packed_> packeds;

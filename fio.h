@@ -108,6 +108,18 @@ class FIO {
     return buffer.size();
   }
 
+  std::string Read(size_t size) {
+    std::string out;
+    char symbol;
+    while (size > 0 && !file_.eof()) {
+      file_.get(symbol);
+      out.append(&symbol);
+      std::cout << size << std::endl;
+      size--;
+    }
+    return out;
+  }
+
   /**
    * @brief Read читает файл возвращает вектор векторов
    * @return размер прочитатнного
