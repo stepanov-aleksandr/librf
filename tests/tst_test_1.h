@@ -3,6 +3,7 @@
 
 #include <gmock/gmock-matchers.h>
 #include <gtest/gtest.h>
+
 #include "../fio.h"
 #include "../libprotocolrf.h"
 #include "../messeng.h"
@@ -32,22 +33,36 @@ using namespace fio;
 //  ASSERT_THAT(0, Eq(0));
 //}
 
-TEST(librf, SendData) {
-  Libprotocolrf lib;
-  std::string path = "outdatapacked_2.txt";
-  MessengRF messeng("Hello  World");
-  lib.SendData(messeng, path, true);  // true перемешивание включено
-  std::cout << messeng.GetMesseng() << std::endl;
-  EXPECT_EQ(1, 1);
-  ASSERT_THAT(0, Eq(0));
-}
+// TEST(librf, SendData) {
+//  Libprotocolrf lib;
+//  std::string path = "outdatapacked_2.txt";
+//  MessengRF messeng("Hello  World");
+//  lib.SendData(messeng, path, true);  // true перемешивание включено
+//  std::cout << messeng.GetMesseng() << std::endl;
+//  EXPECT_EQ(1, 1);
+//  ASSERT_THAT(0, Eq(0));
+//}
 
-TEST(librf, ReadData) {
+// TEST(librf, ReadData) {
+//  Libprotocolrf lib;
+//  std::string path = "outdatapacked_2.txt";
+//  MessengRF messeng;
+//  lib.ReadData(messeng, path);
+//  std::cout << messeng.GetMesseng() << std::endl;
+//  EXPECT_EQ(1, 1);
+//  ASSERT_THAT(0, Eq(0));
+//}
+
+TEST(librf, SendData_) {
   Libprotocolrf lib;
-  std::string path = "outdatapacked_2.txt";
-  MessengRF messeng;
-  lib.ReadData(messeng, path);
-  std::cout << messeng.GetMesseng() << std::endl;
+  std::string path = "outdatapacked_1.txt";
+  Messeng_<std::string> msg("Foo bar");
+  auto data = msg.GetRaw();
+  lib.SendData(data, path, 1);
+  std::set<Packed_> packeds;
+  lib.ReadData(packeds, "outdatapacked_1.txt");
+  Messeng_<std::string> out(packeds);
+  std::cout << out.Messeng();
   EXPECT_EQ(1, 1);
   ASSERT_THAT(0, Eq(0));
 }

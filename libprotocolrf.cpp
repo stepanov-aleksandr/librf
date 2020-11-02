@@ -51,6 +51,31 @@ int Libprotocolrf::SendData(MessengRF &messeng, const std::string &path,
   return 0;
 }
 
+int Libprotocolrf::SendData(std::vector<Packed_> &packeds,
+                            const std::string &path, bool flag_mix = false) {
+  FIO<std::string> file;
+  file.Open(path, std::ios::out);
+
+  if (flag_mix == true) {
+    auto rnd = std::default_random_engine{};
+    std::shuffle(packeds.begin(), packeds.end(), rnd);
+
+    for (auto unit : packeds) {
+      auto vec = unit.Data();
+      file.Write(std::string(vec.begin(), vec.end()) + ";\n\0");
+    }
+
+  } else {
+    for (auto unit : packeds) {
+      auto vec = unit.Data();
+      file.Write(std::string(vec.begin(), vec.end()) + ";\n\0");
+    }
+  }
+
+  file.Close();
+  return 0;
+}
+
 std::vector<std::string> Libprotocolrf::Split(const std::string &s,
                                               char delimiter) {
   std::vector<std::string> tokens;
@@ -85,6 +110,31 @@ int Libprotocolrf::ReadData(MessengRF &messeng, const std::string &path) {
         size_packed--;
       }
     }
+  }
+  return 0;
+}
+int Libprotocolrf::ReadData(std::set<Packed_> &packeds,
+                            const std::string &path) {
+  fio::FIO<std::string> file;
+  file.Open(path, std::ios::in);
+  while (!file.IsEOF()) {
+    auto data = file.GetLine();
+    if (data.size() == 0) return 0;
+
+    std::string f0 = data.substr(0, 1);
+    std::string f1 = data.substr(1, 1);
+    std::string f2 = data.substr(2, 1);
+    std::string f3 = data.substr(3, 1);
+
+    auto number_messeng_ = (uint8_t)(f0.data()[0]);
+    auto number_packed_ = (uint8_t)(f1.data()[0]);
+    auto number_packeds_ = (uint8_t)(f2.data()[0]);
+    auto size_packed_ = (uint8_t)(f3.data()[0]);
+    std::vector<uint8_t> data_(&data[4], &data[data.size() - 1]);
+    auto out = Packed_(
+        {number_messeng_, number_packed_, number_packeds_, size_packed_},
+        data_);
+    packeds.insert(out);
   }
   return 0;
 }

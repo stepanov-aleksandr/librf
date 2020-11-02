@@ -8,6 +8,7 @@
 #include <random>
 #include <sstream>
 #include <string>
+
 #include "fio.h"
 #include "messeng.h"
 
@@ -29,7 +30,10 @@ class Libprotocolrf {
 
   virtual int SendData(MessengRF &messeng, const std::string &path,
                        bool flag_mix);
+  virtual int SendData(std::vector<Packed_> &packeds, const std::string &path,
+                       bool flag_mix);
   virtual int ReadData(MessengRF &messeng, const std::string &path);
+  virtual int ReadData(std::set<Packed_> &packeds, const std::string &path);
 
  private:
   std::string data_;

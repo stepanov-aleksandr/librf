@@ -3,6 +3,9 @@
 
 #include <gmock/gmock-matchers.h>
 #include <gtest/gtest.h>
+
+#include <string>
+
 #include "../config.h"
 #include "../messeng.h"
 
@@ -27,6 +30,10 @@ TEST(messeng, TestGetMesseng) {
   EXPECT_EQ(ret.size(), std::string("Hello world").size());
 }
 
-TEST(messeng, TestPackField) { EXPECT_EQ(1, 1); }
+TEST(messeng, TestPackField) {
+  Messeng_<std::string> msg("Hello world");
+  auto data = msg.GetRaw();
+  EXPECT_EQ(1, 1);
+}
 
 #endif  // TST_TEST_1_H

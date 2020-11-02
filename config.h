@@ -2,6 +2,7 @@
 #define CONFIG_H
 
 #include <iostream>
+#include <memory>
 
 constexpr int MAX_SIZE_PACKED = 3;  ///< максимальный размер пакета
 

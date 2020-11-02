@@ -56,3 +56,7 @@ std::ostream& operator<<(std::ostream& out, const MessengRF& messeng) {
   }
   return out;
 }
+
+bool operator<(const Packed_& lhs, const Packed_& rhs) {
+  return lhs.header_.number_packed_ < rhs.header_.number_packed_;
+}
