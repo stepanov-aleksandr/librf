@@ -48,6 +48,7 @@ class MessengRF {
 
 class Header {
  public:
+  Header() {}
   Header(uint8_t number_messeng, uint8_t number_packed, uint8_t number_packeds,
          uint8_t size_packed)
       : number_messeng_(number_messeng),
@@ -65,6 +66,7 @@ class Header {
 
 class Packed_ {
  public:
+  Packed_() {}
   Packed_(const Header& header, const std::vector<uint8_t>& data)
       : header_(header), data_(data) {}
   std::vector<uint8_t> Data() {
@@ -78,6 +80,8 @@ class Packed_ {
   }
 
   std::vector<uint8_t> Data_() { return data_; }
+  Header Header_() { return header_; }
+
   size_t Size() { return sizeof(Header) + data_.size(); }
 
   friend bool operator<(const Packed_& lhs, const Packed_& rhs);
@@ -90,8 +94,10 @@ class Packed_ {
 template <class Type>
 class Messeng_ {
  public:
-  Messeng_(const Type& data) : data_(data) {}
-  Messeng_(const std::set<Packed_>& packeds) {
+  Messeng_() {}
+  Messeng_(const Type& data, int number) : data_(data), number_(number) {}
+  Messeng_(const std::set<Packed_>& packeds, const int& number)
+      : number_(number) {
     std::set<Packed_> packeds_;
     for (auto& packed : packeds) {
       packeds_.insert(const_cast<Packed_&>(packed));
@@ -101,6 +107,12 @@ class Messeng_ {
       auto i = unit.Data_();
       data_.append({i.begin(), i.end()});
     }
+  }
+
+  int PushPacked(Packed_& packed) {
+    auto i = packed.Data_();
+    data_.append({i.begin(), i.end()});
+    return 0;
   }
 
   const std::vector<Packed_> SplitPacked(const Type& data) {
@@ -127,7 +139,7 @@ class Messeng_ {
     }
     if (start < data.end()) {
       packeds_.push_back(
-          {{number_, cp, num_pack, MAX_SIZE_PACKED}, {start, data.end()}});
+          {{number_, cp, num_pack, data.end() - start}, {start, data.end()}});
     }
     return packeds_;
   }
@@ -138,6 +150,8 @@ class Messeng_ {
   }
 
   Type Messeng() { return data_; }
+
+  friend bool operator<(const Messeng_& lhs, const Messeng_& rhs);
 
  private:
   uint8_t number_{1};

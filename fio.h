@@ -114,7 +114,6 @@ class FIO {
     while (size > 0 && !file_.eof()) {
       file_.get(symbol);
       out.append(&symbol);
-      std::cout << size << std::endl;
       size--;
     }
     return out;

@@ -54,7 +54,7 @@ int Libprotocolrf::SendData(MessengRF &messeng, const std::string &path,
 int Libprotocolrf::SendData(std::vector<Packed_> &packeds,
                             const std::string &path, bool flag_mix = false) {
   FIO<std::string> file;
-  file.Open(path, std::ios::out);
+  file.Open(path, std::ios::app);
 
   if (flag_mix == true) {
     auto rnd = std::default_random_engine{};
@@ -115,22 +115,22 @@ int Libprotocolrf::ReadData(MessengRF &messeng, const std::string &path) {
   }
   return 0;
 }
-int Libprotocolrf::ReadData(std::set<Packed_> &packeds,
+int Libprotocolrf::ReadData(std::map<int, std::map<int, Packed_>> &packeds,
                             const std::string &path) {
   fio::FIO<std::string> file;
   file.Open(path, std::ios::in);
   while (!file.IsEOF()) {
-    auto data = file.Read(sizeof(Header) + MAX_SIZE_PACKED);
-    if (data.size() == 0) continue;
+    auto data = file.Read(sizeof(Header));
+    if (data.size() == 0 || data.size() < sizeof(Header)) break;
     auto number_messeng_ = static_cast<uint8_t>((data.substr(0, 1).data()[0]));
     auto number_packed_ = static_cast<uint8_t>(data.substr(1, 1).data()[0]);
     auto number_packeds_ = static_cast<uint8_t>(data.substr(2, 1).data()[0]);
     auto size_packed_ = static_cast<uint8_t>(data.substr(3, 1).data()[0]);
-    std::vector<uint8_t> data_(&data[4], &data[data.size()]);
-    auto out = Packed_(
+    data = file.Read(static_cast<int>(size_packed_));
+    std::vector<uint8_t> data_(&data[0], &data[size_packed_]);
+    packeds[number_messeng_][number_packed_] = {
         {number_messeng_, number_packed_, number_packeds_, size_packed_},
-        data_);
-    packeds.insert(out);
+        data_};
   }
   return 0;
 }

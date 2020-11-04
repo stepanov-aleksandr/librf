@@ -60,3 +60,8 @@ std::ostream& operator<<(std::ostream& out, const MessengRF& messeng) {
 bool operator<(const Packed_& lhs, const Packed_& rhs) {
   return lhs.header_.number_packed_ < rhs.header_.number_packed_;
 }
+
+template <typename Type>
+bool operator<(const Messeng_<Type>& lhs, const Messeng_<Type>& rhs) {
+  return lhs.number_ < rhs.number_;
+}

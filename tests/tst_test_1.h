@@ -56,13 +56,27 @@ using namespace fio;
 TEST(librf, SendData_) {
   Libprotocolrf lib;
   std::string path = "outdatapacked_1.txt";
-  Messeng_<std::string> msg("Hello world Hello world Hello world");
-  auto data = msg.GetRaw();
-  lib.SendData(data, path, 1);
-  std::set<Packed_> packeds;
+  Messeng_<std::string> msg_1("Hello world Hello world Hello world", 1);
+  Messeng_<std::string> msg_2("Foo bar Foo bar Foo bar Foo bar Foo bar", 2);
+  auto data_0 = msg_1.GetRaw();
+  auto data_1 = msg_2.GetRaw();
+  lib.SendData(data_0, path, 0);
+  lib.SendData(data_1, path, 0);
+
+  std::map<int, std::map<int, Packed_>> packeds;
   lib.ReadData(packeds, "outdatapacked_1.txt");
-  Messeng_<std::string> out(packeds);
-  std::cout << out.Messeng();
+
+  std::map<int, Messeng_<std::string>> messengs;
+
+  for (auto messeng : packeds) {
+    for (auto packed : messeng.second) {
+      auto data = packed.second;
+      messengs[data.Header_().number_messeng_].PushPacked(data);
+    }
+  }
+
+  std::cout << messengs[1].Messeng() << std::endl;
+  std::cout << messengs[2].Messeng() << std::endl;
   EXPECT_EQ(1, 1);
   ASSERT_THAT(0, Eq(0));
 }
